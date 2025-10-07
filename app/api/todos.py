@@ -35,8 +35,11 @@ def create_todo():
     data = request.get_json() or {}
 
     # creating a new todo via schema
-    schema = TodoSchema(session=db.session)
-    obj = schema.load({**data, 'owner_id': user_id})
+    try:
+        schema = TodoSchema(session=db.session)
+        obj = schema.load({**data, 'owner_id': user_id})
+    except:
+        return jsonify({"msg": "Your request should include 'title' and optionally 'description'."}), 400
 
     # uploading new todo in database
     db.session.add(obj)

@@ -41,7 +41,7 @@ def register():
                     'id': new_user.id,
                     'username': new_user.username,
                     'email': new_user.email,
-                    'access_token': access_token}), 200
+                    'access_token': access_token}), 201
 
 
 @bp.route('/login', methods=['POST'])

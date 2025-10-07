@@ -10,7 +10,7 @@ def test_user_registration(client):
     })
 
     # checking if status is okay and user was added to the query
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert User.query.count() == 1
 
     # checking if backed hashed user's password
@@ -55,7 +55,7 @@ def test_duplicate_registration(client):
         "email": "duplicate@emial.com",
         "password": "duplicate"
     })
-    assert response1.status_code == 200
+    assert response1.status_code == 201
     assert User.query.count() == 1
 
     # same username check
@@ -86,7 +86,7 @@ def test_login(client):
     })
 
     # checking if status is okay and user was added to the query
-    assert response1.status_code == 200
+    assert response1.status_code == 201
     assert User.query.count() == 1
 
     # loggin in new user

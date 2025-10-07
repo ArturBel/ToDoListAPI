@@ -12,7 +12,7 @@ def register_user(client):
     })
 
     # checking if status is okay and user was added to the query
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert User.query.count() == 1
 
     # checking if backed hashed user's password
@@ -43,7 +43,7 @@ def test_crud(client):
     }, headers=headers)
 
     # checking if invalid todo is not saved
-    assert invalid_create_response.status_code == 500
+    assert invalid_create_response.status_code == 400
     assert Todo.query.count() == 0
 
     # valid create
