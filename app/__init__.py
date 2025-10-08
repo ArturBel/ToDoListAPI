@@ -20,7 +20,7 @@ def create_app(config=Config):
 
     # registering blueprints and error handlers
     register_api(app=app)
-    register_error_handlers(app=app)
+    register_error_handlers(jwt=jwt)
 
     # health endpoint
     @app.route('/health')
