@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
-from ..extensions import db
+from ..extensions import db, redis_client
 from ..models import User
-from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity, get_jwt
+import datetime
+import json
 
 
 bp = Blueprint('auth', __name__)
@@ -79,3 +81,24 @@ def refresh():
     # creating new access token and outputting it
     new_access_token = create_access_token(identity=str(user_id))
     return jsonify({"new_access_token": new_access_token}), 201
+
+
+@bp.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    # getting jwt information
+    jti = get_jwt()['jti']
+    expiry_timestamp = get_jwt()['exp']
+
+    # setting time for expiry
+    now = datetime.datetime.now(datetime.timezone.utc)
+    expiry_time = datetime.datetime.fromtimestamp(expiry_timestamp, datetime.timezone.utc) - now
+
+    # setting token as revoked in redis until it naturally expires
+    redis_client.setex(jti, int(expiry_time.total_seconds()), json.dumps({
+        'revoked': True,
+        'revoked_at': now.isoformat()
+    }))
+
+    # returning the message to the user
+    return jsonify({'msg': 'token revoked successfully'})

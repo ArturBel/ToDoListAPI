@@ -1,0 +1,11 @@
+flask
+python-dotenv
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2-binary
+flask_jwt_extended
+marshmallow
+flask-marshmallow
+marshmallow-sqlalchemy
+pytest
+redis

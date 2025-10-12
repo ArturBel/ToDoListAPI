@@ -1,4 +1,5 @@
 from flask import jsonify
+from .extensions import redis_client
 
 
 def register_error_handlers(jwt):
@@ -27,6 +28,12 @@ def register_error_handlers(jwt):
         }), 422
 
     # revoked tokens
+    @jwt.token_in_blocklist_loader
+    def check_if_token_revoked(jwt_header, jwt_payload):
+        jti = jwt_payload["jti"]
+        entry = redis_client.get(jti)
+        return entry is not None
+
     @jwt.revoked_token_loader
     def revoked_token_callback(jwt_header, jwt_payload):
         return jsonify({
