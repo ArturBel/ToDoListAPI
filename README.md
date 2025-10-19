@@ -1,7 +1,34 @@
 # ToDoListAPI
----
+
 ## Description
 REST API to allow users manage their To-Dos built with Flask. Project was inspired by [Todo List API](https://roadmap.sh/projects/todo-list-api) by roadmap.sh.
+
+---
+## Project structure
+```
+ToDoListAPI/
+├── app/
+│   ├── __init__.py      # def to initialize app instance
+│   ├── config.py        # default and test configurations
+|   ├── errors.py        # def to register errors for app instance
+│   ├── extensions.py    # db, migration, jwt and redis 
+│   ├── models.py        # user and todo model
+│   ├── schemas.py       # schemas for user and todo
+│   ├── api/
+│   │   ├── __init__.py  # def to register blueprints for app instance
+│   │   ├── auth.py      # register and login endpoints
+│   │   └── todos.py     # crud operations
+├── migrations/          # alembic output (used for db migration and upgrade)
+├── tests/
+│   ├── conftest.py      # config for test
+│   ├── test_auth.py     # script to test login and registration
+│   └── test_todos.py    # script to test crud
+├── requirements.txt
+├── manage.py            # app instance is run here
+├── .env                 # secrets are stored here
+├── .env.example         # example of how .env should look like
+└── README.md
+```
 
 ---
 ## Main features
